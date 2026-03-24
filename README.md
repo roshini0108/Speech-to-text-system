@@ -1,35 +1,51 @@
-# 🎤 Speech-to-Text System
+# 🎤 Speech-to-Text Web Application
 
-A Python-based Speech-to-Text (STT) application that converts spoken audio into text using the SpeechRecognition library and Google Speech API.
+A full-stack AI-powered Speech-to-Text (STT) web application that converts audio into text using **SpeechRecognition** and a **FastAPI backend**, with a clean and modern frontend UI.
 
 ---
 
 ## 🚀 Features
 
 * 🎧 Transcribe audio from `.wav` files
-* 🎤 Live microphone speech recognition
-* 🔁 Continuous listening mode
-* 🛑 Stop recording using voice command ("stop") or Ctrl+C
-* ⏱ Handles silence and timeouts
-* 💾 Save transcription to `output.txt`
-* ⚡ Real-time feedback ("You said: ...")
+* 🎤 Live microphone speech recognition (CLI)
+* 🔁 Continuous listening with voice stop command ("stop")
+* ⚡ FastAPI backend with REST API
+* 🌐 Frontend UI with file upload and real-time transcription
+* 💬 Live status updates (Processing, Success, Errors)
+* 🎨 Smooth UI with pastel theme + animations
+* 💾 Option to save transcription to file
+* 🛡️ Error handling (timeout, API errors, invalid input)
 
 ---
 
 ## 🛠️ Tech Stack
 
+### Backend
+
 * Python
+* FastAPI
 * SpeechRecognition
-* PyAudio (for microphone input)
+* PyAudio
+
+### Frontend
+
+* HTML
+* CSS (Pastel UI + animations)
+* JavaScript (Fetch API)
 
 ---
 
 ## 📂 Project Structure
 
-```id="9bx0c4"
+```bash
 Speech-to-Text/
 │
-├── speech_to_text.py
+├── speech_to_text.py      # FastAPI app + STT logic
+├── frontend/
+│   ├── index.html        # UI layout
+│   ├── style.css         # Styling + animations
+│   └── script.js         # Frontend logic + API calls
+│
 ├── requirements.txt
 ├── README.md
 └── .gitignore
@@ -41,16 +57,16 @@ Speech-to-Text/
 
 ### 1. Clone the repository
 
-```bash id="8gq3hc"
-git clone https://github.com/your-username/speech-to-text.git
-cd speech-to-text
+```bash
+git clone https://github.com/your-username/speech-to-text-system.git
+cd speech-to-text-system
 ```
 
 ---
 
 ### 2. Create virtual environment
 
-```bash id="y5r3wo"
+```bash
 python -m venv venv
 venv\Scripts\activate
 ```
@@ -59,67 +75,97 @@ venv\Scripts\activate
 
 ### 3. Install dependencies
 
-```bash id="nwh8j1"
+```bash
 pip install -r requirements.txt
 ```
 
 ---
 
-## ▶️ Usage
+## ▶️ Running the Application
 
-### Run the program
+### 🖥️ Start Backend (FastAPI)
 
-```bash id="o5yq1u"
+```bash
+uvicorn speech_to_text:app --reload
+```
+
+Backend runs at:
+
+```text
+http://127.0.0.1:8000
+```
+
+---
+
+### 🌐 Open Frontend
+
+Open in browser:
+
+```text
+frontend/index.html
+```
+
+---
+
+## 🔗 API Endpoint
+
+### POST `/transcribe`
+
+* Accepts: `.wav` audio file
+* Returns:
+
+```json
+{
+  "success": true,
+  "text": "Transcribed speech here"
+}
+```
+
+---
+
+## 🎧 Usage
+
+### 🔹 Upload Audio File
+
+1. Select `.wav` file from UI
+2. Wait for processing
+3. View transcription in output box
+
+---
+
+### 🔹 Microphone (CLI Mode)
+
+```bash
 python speech_to_text.py
 ```
 
----
-
-### Choose input method
-
-```text id="ec0tqb"
-1. Audio file
-2. Microphone
-```
-
----
-
-### 🎧 File input
-
-Provide path to `.wav` file:
-
-```text id="6fhz3r"
-C:/Users/lenovo/Downloads/harvard.wav
-```
-
----
-
-### 🎤 Microphone input
-
+* Choose microphone option
 * Speak continuously
-* Say **"stop"** to end recording
-
----
-
-### 💾 Save output
-
-```text id="3jrsn3"
-Save transcription to output.txt? (y/n)
-```
+* Say **"stop"** to finish
 
 ---
 
 ## ⚠️ Notes
 
+* Use `.wav` format for best results
 * Ensure microphone permissions are enabled
-* Use clear audio for better accuracy
-* Internet connection required for Google API
+* Internet connection required (Google Speech API)
+* Accuracy depends on audio clarity
+
+---
+
+## 🌟 Future Improvements
+
+* 🎤 Microphone support in web UI
+* 📁 Support for `.mp3` and other formats
+* ☁️ Deployment (Render / Vercel)
+* 🧠 Advanced models (Wav2Vec)
 
 ---
 
 ## 👩‍💻 Author
 
-Roshini Mutyala
+**Roshini Mutyala**
 B.Tech CSE | AI & Web Development
 
 ---
