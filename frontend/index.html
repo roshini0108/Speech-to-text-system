@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech to Text</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="app">
+        <section class="card">
+            <p class="eyebrow">Speech to Text</p>
+            <h1>Turn audio into text</h1>
+            <p class="subtitle">Upload a WAV file or try the recording controls below.</p>
+
+            <div class="input-group">
+                <label for="audioFile" class="label">Upload audio file (.wav)</label>
+                <input type="file" id="audioFile" accept=".wav,audio/wav">
+            </div>
+
+            <div class="controls">
+                <button id="startBtn" class="button primary" type="button">Start Recording 🎤</button>
+                <button id="stopBtn" class="button secondary" type="button" disabled>Stop Recording</button>
+            </div>
+
+            <div class="status" id="status">Idle. Waiting for input.</div>
+
+            <div class="output-group">
+                <label for="transcript" class="label">Transcribed text</label>
+                <textarea id="transcript" placeholder="Your transcription will appear here..." readonly></textarea>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

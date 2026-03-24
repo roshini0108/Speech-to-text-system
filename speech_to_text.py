@@ -1,7 +1,20 @@
 ﻿import os
 import sys
+import tempfile
 
 import speech_recognition as sr
+from fastapi import FastAPI, File, HTTPException, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
+
+
+app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 def transcribe_audio(file_path: str) -> str:
@@ -61,6 +74,54 @@ def transcribe_microphone() -> str:
 def save_transcription(text: str, output_file: str = "output.txt") -> None:
     with open(output_file, "w", encoding="utf-8") as file:
         file.write(text)
+
+
+@app.post("/transcribe")
+async def transcribe(file: UploadFile = File(...)) -> dict[str, object]:
+    if not file.filename or not file.filename.lower().endswith(".wav"):
+        raise HTTPException(
+            status_code=400,
+            detail={"success": False, "error": "Please upload a .wav audio file."},
+        )
+
+    temp_path = None
+
+    try:
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as temp_file:
+            temp_file.write(await file.read())
+            temp_path = temp_file.name
+
+        transcription = transcribe_audio(temp_path)
+        return {"success": True, "text": transcription}
+    except FileNotFoundError:
+        raise HTTPException(
+            status_code=400,
+            detail={"success": False, "error": "Uploaded file could not be read."},
+        )
+    except ValueError as error:
+        raise HTTPException(
+            status_code=400,
+            detail={"success": False, "error": str(error)},
+        )
+    except sr.UnknownValueError:
+        raise HTTPException(
+            status_code=422,
+            detail={"success": False, "error": "Could not understand the uploaded audio."},
+        )
+    except sr.RequestError as error:
+        raise HTTPException(
+            status_code=503,
+            detail={"success": False, "error": f"Google Speech API request failed: {error}"},
+        )
+    except Exception as error:
+        raise HTTPException(
+            status_code=500,
+            detail={"success": False, "error": f"Unexpected server error: {error}"},
+        )
+    finally:
+        await file.close()
+        if temp_path and os.path.exists(temp_path):
+            os.remove(temp_path)
 
 
 def main() -> None:
