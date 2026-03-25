@@ -58,7 +58,7 @@ Speech-to-Text/
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/speech-to-text-system.git
+git clone https://github.com/roshini0108/speech-to-text-system.git
 cd speech-to-text-system
 ```
 
